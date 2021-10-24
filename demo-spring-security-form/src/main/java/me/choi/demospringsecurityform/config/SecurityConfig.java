@@ -19,4 +19,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin();
         http.httpBasic();
     }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser("junwoo").password("{noop}123").roles("USER").and()
+                .withUser("admin").password("{noop}123").roles("ADMIN");
+    }
 }
