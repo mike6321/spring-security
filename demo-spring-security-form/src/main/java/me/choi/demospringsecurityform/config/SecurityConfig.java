@@ -1,7 +1,6 @@
 package me.choi.demospringsecurityform.config;
 
-import me.choi.demospringsecurityform.account.AccountService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -10,8 +9,8 @@ import org.springframework.security.access.expression.SecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.access.vote.AbstractAccessDecisionManager;
 import org.springframework.security.access.vote.AffirmativeBased;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.access.expression.WebExpressionVoter;
@@ -59,5 +58,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .accessDecisionManager(accessDecisionManager());
         http.formLogin();
         http.httpBasic();
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+//        web.ignoring().mvcMatchers("/favicon.ico");
+        web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 }
