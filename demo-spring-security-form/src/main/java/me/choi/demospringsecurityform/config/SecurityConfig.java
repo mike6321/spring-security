@@ -53,6 +53,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/", "/info", "/account/**").permitAll()
                 .mvcMatchers("/admin").hasRole("ADMIN")
                 .mvcMatchers("/user").hasRole("USER")
+
+                // TODO: 2021/11/09 결과는 같지만 똑같지 않다.
+                /**
+                 * 15개의 Filter 요청을 다 타게 된다.
+                 * */
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+
                 .anyRequest().authenticated()
                 .expressionHandler(expressionHandler());
 //                .accessDecisionManager(accessDecisionManager());
