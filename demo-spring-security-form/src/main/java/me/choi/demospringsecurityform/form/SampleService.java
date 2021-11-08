@@ -1,7 +1,7 @@
 package me.choi.demospringsecurityform.form;
 
-import me.choi.demospringsecurityform.account.Account;
-import me.choi.demospringsecurityform.account.AccountContext;
+import me.choi.demospringsecurityform.common.SecurityLogger;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,4 +18,9 @@ public class SampleService {
         System.out.println("***************************");
     }
 
+    @Async
+    public void asyncService() {
+        SecurityLogger.log("Async Service");
+        System.out.println("Async service called");
+    }
 }
