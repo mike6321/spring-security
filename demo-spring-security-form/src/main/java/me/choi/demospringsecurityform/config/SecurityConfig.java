@@ -67,12 +67,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin();
         http.httpBasic();
 
+        http.logout().logoutSuccessUrl("/")
+                     .invalidateHttpSession(true);
+//            .logoutSuccessHandler()
+//            .addLogoutHandler()
+//            .deleteCookies("")
+
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
 //        web.ignoring().mvcMatchers("/favicon.ico");
+
         web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 }
