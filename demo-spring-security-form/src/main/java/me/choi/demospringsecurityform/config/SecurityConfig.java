@@ -64,7 +64,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .expressionHandler(expressionHandler());
 //                .accessDecisionManager(accessDecisionManager());
-        http.formLogin();
+        http.formLogin()
+                .loginPage("/signin");
+        // TODO: 2021/11/14 파라미터 재 설정
+//        .usernameParameter("my-username")
+//        .passwordParameter("my-password");
         http.httpBasic();
 
         http.logout().logoutSuccessUrl("/")
