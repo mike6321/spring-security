@@ -12,6 +12,6 @@
         <module name="spring-security-exercise.server-basic-test.main" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="11" />
+    <bytecodeTargetLevel target="16" />
   </component>
 </project>
