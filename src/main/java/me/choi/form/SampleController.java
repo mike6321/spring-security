@@ -1,5 +1,9 @@
 package me.choi.form;
 
+import me.choi.account.Account;
+import me.choi.account.AccountContext;
+import me.choi.account.AccountRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +14,9 @@ import java.security.Principal;
 public class SampleController {
 
     private final SampleService sampleService;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     public SampleController(SampleService sampleService) {
         this.sampleService = sampleService;
@@ -36,7 +43,8 @@ public class SampleController {
     @GetMapping("/dashboard")
     public String dashboard(Model model, Principal principal) {
         model.addAttribute("message", "Hello " + principal.getName());
-
+        Account account = accountRepository.findByUsername(principal.getName());
+        AccountContext.ACCOUNT_THREAD_LOCAL.set(account);
         sampleService.dashboard();
         return "dashboard";
     }
