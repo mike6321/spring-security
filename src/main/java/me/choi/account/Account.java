@@ -1,5 +1,7 @@
 package me.choi.account;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import javax.persistence.*;
 
 @Entity
@@ -48,7 +50,7 @@ public class Account {
         this.role = role;
     }
 
-    public void encodePassword(Account account) {
-        account.setPassword("{noop}" + account.getPassword());
+    public void encodePassword(PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(this.password);
     }
 }
