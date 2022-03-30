@@ -15,16 +15,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .mvcMatchers("/", "/info").permitAll()
                 .mvcMatchers("/admin").hasRole("ADMIN")
+                .mvcMatchers("/account/**").permitAll()
                 .anyRequest().authenticated();
         http.formLogin();
         http.httpBasic();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("junwoo").password("{noop}123").roles("USER").and()
-                .withUser("admin").password("{noop}!@#").roles("ADMIN");
-    }
 
 }
