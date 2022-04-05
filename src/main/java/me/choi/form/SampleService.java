@@ -1,5 +1,7 @@
 package me.choi.form;
 
+import me.choi.common.SecurityLogger;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,5 +15,11 @@ public class SampleService {
         UserDetails principal = (UserDetails) authentication.getPrincipal();
         System.out.println(authentication.hashCode());
         System.out.println(principal.getUsername());
+    }
+
+    @Async
+    public void asyncService() {
+        SecurityLogger.log("Async service");
+        System.out.println("Async Service is called");
     }
 }
