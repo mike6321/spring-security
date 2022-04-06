@@ -1,6 +1,8 @@
 package me.choi.config;
 
+import me.choi.account.AccountService;
 import me.choi.account.CustomAccessDeniedHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +20,9 @@ import org.springframework.security.web.access.expression.DefaultWebSecurityExpr
 @Configuration
 @Order(Ordered.LOWEST_PRECEDENCE - 10)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private AccountService accountService;
 
     public SecurityExpressionHandler expressionHandler() {
         /**
@@ -46,6 +51,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .expressionHandler(expressionHandler());
 
         http.formLogin().loginPage("/login").permitAll();
+        http.formLogin()
+            .loginPage("/login")
+            .permitAll();
+
+        http.rememberMe()
+            .userDetailsService(accountService)
+            .key("remember-me-sample");
+
         http.httpBasic();
 
         http.logout().logoutUrl("/logout").logoutSuccessUrl("/");
