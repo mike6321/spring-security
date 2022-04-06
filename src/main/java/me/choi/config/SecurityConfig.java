@@ -9,6 +9,7 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 
@@ -44,6 +45,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         ;
         http.formLogin().loginPage("/login").permitAll();
         http.httpBasic();
+
+//        http.sessionManagement()
+//            .sessionFixation()
+//            .changeSessionId();
+
+//        http.sessionManagement()
+//            .sessionFixation()
+//            .migrateSession();
+
+//        http.sessionManagement()
+//            .sessionFixation()
+//            .changeSessionId()
+//            .invalidSessionUrl("/error");
+
+//        http.sessionManagement()
+//            .sessionFixation()
+//            .changeSessionId()
+//            .maximumSessions(1)
+//            .maxSessionsPreventsLogin(true);
+
+        http.sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
 
         http.logout().logoutUrl("/logout").logoutSuccessUrl("/");
 
