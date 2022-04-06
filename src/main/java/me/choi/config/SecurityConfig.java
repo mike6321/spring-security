@@ -2,6 +2,7 @@ package me.choi.config;
 
 import me.choi.account.AccountService;
 import me.choi.account.CustomAccessDeniedHandler;
+import me.choi.common.LoggingFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
+import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
 
 @Configuration
 @Order(Ordered.LOWEST_PRECEDENCE - 10)
@@ -42,6 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.addFilterBefore(new LoggingFilter(), WebAsyncManagerIntegrationFilter.class);
+
         http.authorizeRequests()
                 .mvcMatchers("/", "/info", "/signup").permitAll()
                 .mvcMatchers("/admin").hasRole("ADMIN")
