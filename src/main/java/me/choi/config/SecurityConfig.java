@@ -1,6 +1,8 @@
 package me.choi.config;
 
+import me.choi.account.CustomAccessDeniedHandler;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -9,8 +11,8 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 
 @Configuration
@@ -41,35 +43,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/user").hasRole("USER")
                 .mvcMatchers("/account/**").permitAll()
                 .anyRequest().authenticated()
-                .expressionHandler(expressionHandler())
-        ;
+                .expressionHandler(expressionHandler());
+
         http.formLogin().loginPage("/login").permitAll();
         http.httpBasic();
 
-//        http.sessionManagement()
-//            .sessionFixation()
-//            .changeSessionId();
-
-//        http.sessionManagement()
-//            .sessionFixation()
-//            .migrateSession();
-
-//        http.sessionManagement()
-//            .sessionFixation()
-//            .changeSessionId()
-//            .invalidSessionUrl("/error");
-
-//        http.sessionManagement()
-//            .sessionFixation()
-//            .changeSessionId()
-//            .maximumSessions(1)
-//            .maxSessionsPreventsLogin(true);
-
-        http.sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-
         http.logout().logoutUrl("/logout").logoutSuccessUrl("/");
+
+        // TODO: 2022/04/06 ExceptionTranslationFilter -> FilterSecurityInterceptor
+        /**
+         * FilterSecurityInterceptor (AccessDecisionManager, AffirmativeBased)
+         * 발생할 수 있는 예외
+         *  AuthenticationException -> AuthenticationEntryPoint: 해당 유저가 인증할 수 있도록 인증이 가능한 페이지로 이동 (ex. 로그인하지 않고 대시보드 접근)
+         *  AccessDeniedException -> AccessDeniedHandler: 유저로 로그인 했을 때 어드민 페이지 접근
+         * */
+        http.exceptionHandling()
+            .accessDeniedHandler(accessDeniedHandler());
 
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
     }
@@ -81,5 +70,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         /**
          * ignoring을 하면 filter의 목록이 비어지게 된다.
          * */
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
     }
 }
