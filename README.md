@@ -73,6 +73,3 @@ SpringSecurity 스터디를 위한 repository 입니다.
 [토큰 기반 인증 필터 : RememberMeAuthenticationFilter](https://jwdeveloper.notion.site/RememberMeAuthenticationFilter-6769f54c42394beea5f731b426cd9116)
 
 [커스텀 필터 추가하기](https://jwdeveloper.notion.site/71151b8e491046d6bd9cf881abecff4c)
-
-------
-
